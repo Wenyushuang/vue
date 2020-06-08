@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src='node_modules/vue/dist/vue.js'></script>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    name: 'jamie',
+                    arr: [1,2,3]
+                }
+            }
+        })
+        //vm.$mount()内部会判断用户是否传入el属性 如果没有 则不会进行挂在操作
+        //有可能有些组件我希望不挂在到app的节点上
+        console.log(vm.$el.innerHtml)//引用类型 因为渲染是异步的
+        console.log(vm.$nextTick)//保证页面渲染完毕以后 获取最新的dom元素
+        //我们有渲染watcher 用户自定义watcher 
+        vm.$wacth(msg, (newValeu, oldValue) => {
+            console.log(newValeu)
+        })
+
+
+    </script>
+    
+</body>
+</html>

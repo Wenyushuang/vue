@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = 'app'>
+        <div v-once> {{name}}</div>
+        <!-- 指令对应的值是变量 innerHtml 会转化成标签插入 对导致xss攻击 用户输入的部分不信任  对内容严格把控-->
+        <!-- <input></input> -->
+        <div v-html='html'></div> 
+        <!-- v-if v-eles v-else-if  三元表达式-->
+        <!-- 编译成渲染函数 如果条件不满足 就不渲染 操作的是dom -->
+        <!-- template是没有任何意义的一个标签 不会渲染出来 可以配合template-->
+        <templete v-if='true'>
+            <div>hello</div>
+            <div>jamie</div>
+        </templete>
+        <div v-else>world</div>
+        <!-- v-show 解析出来是一个指令 最终会通过样式控制这个div是显示还是隐藏 （display：none）-->
+
+        <div v-show='true'></div>
+        <!-- 不要把v-for和v-if使用在一个标签上 -->
+        <!-- v-for和v-if的优先级问题： v-for的优先级大于v-if的 先循环再判断 有性能问题 尽量使用计算属性来解决问题 -->
+         <div v-for="(v, index) in arr" :key="index">
+             {{v}}
+         </div>
+         <!-- 尽量不要使用索引作为key 尤其是经常操作的列表 -->
+         <!-- 索引相同会认为是同一个dom 然后删除重新创建
+             但是如果dom'没有变化 
+             用来做比对的
+             可以使用唯一标识 找到在新值在旧值中的标识 进行移动 
+            -->
+   
+    </div>
+    <v-once></v-once>//只渲染一次 稍后渲染不会重新渲染
+    <script src='node_modules/vue/dist/vue.js'></script>
+    <script>
+        
+
+        let vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    name: 'shuang',
+                    arr: [1,2,3],
+                    html: '<h1>hello<h1>'
+                }
+            }
+        })
+        //指令对应的值都是变量
+        // v-once 只渲染一次 稍后渲染不会渲染
+        //v-html
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app" >
+        <div v-click-outside='blur'>
+            <input type="text" @focus = "focus">
+            <div v-show="visible">面板 <button>点击</button></div>
+        </div>
+    </div>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script>
+        //指令的目的就是dom操作
+        //如果写在data里 this指向window
+        // 创建指令
+        Vue.directive(); //全局指令
+
+        let vm = new Vue({
+            el:'#app',
+            directives: { //局部指令
+                clickOutside: {//要变成驼峰 函数写法默认是bind + update
+                    bind (el,binds, vnode, oldVnode) {
+                        //el指定绑定指令的dom 
+                        //binds
+                        //vnode中 有个context代码
+                        el.handler = (e) => {
+                            if(!el.contains(e.target)) {
+                                console.log(el)
+                                console.log(binds)
+                                let method = binds.expression; //
+                                vnode.context[method]() //代表当前指令所在的上下文 上下人中有组件的实例？
+                            }
+                        }
+                        document.addEventListener('click',el.handler)
+                    },
+                    unbind(el) {
+                        document.removeEventListener('click', el.handler)
+                    }
+                    // bind(el,binds,vnode,oldVnode) {//指令绑定的时候（属性上有这个指令）；还没有插入到父元素中 此时父元素不存在
+                    //     console.log(el.parentNode)
+                    // },
+                    // inserted(el,binds,vnode,oldVnode) { //指令被插入div内 指令被插入到父元素中
+                    // },
+                    // update(el,binds,vnode,oldVnode) { //组件更新之前 div更新之前  
+                    //     console.log(el.innerHtml)
+                    // },
+                    // componentsUpdate(el,binds,vnode,oldVnode) { //组件更新之后
+                    //     console.log(el.innerHtml)
+                    // },
+                    // unbind() { //解除指令绑定
+                    // }
+                }
+            },
+            data() {
+                return {
+                    visible: true
+                    // focues() {
+                    //     console.log(this) //this指向window
+                    // }
+                }
+            },
+            methods: {//内部会绑定this永远指向当前实例
+                focus() {
+                    this.visible = false
+                    console.log(this) //指向vue实例
+                },
+                //事件委托
+
+            }
+        })
+    </script>
+</body>
+</html>
